@@ -1,0 +1,4 @@
+Subject,Pre Mission,In Mission,Pre-Efficiency,In-Efficiency,Number of Wakens(Pre),Number of wakens(in),Illumination(Pre),Illumination(In),Sleep latency(Pre),Sleep latency(In)
+Test Person-1,6.62,6.00,88.5,88.1,1.43,4.65,950,30,6,15
+Test Person-2,6.78,6.21,96.40,95.66,0.31,7.11,950,30,6,15
+Test Person-3,6.68,5.1,89.6,65.8,1.72,6.5,950,30,6,15
