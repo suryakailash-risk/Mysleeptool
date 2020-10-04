@@ -14,5 +14,32 @@ source we took to make this: https://github.com/suryakailash-risk/Mysleeptool/bl
 
 reasearch made: https://github.com/suryakailash-risk/Mysleeptool/blob/main/Researchinfo_pdf.pdf </br>
 
+Video:-https://drive.google.com/drive/folders/1lX-pZPrfBRjeVQXzntD1Q3uAk9GCOyY2?usp=sharing
+
 Note for apk user:
 this application will work in procedure only incase of any error kindly read the instruction given on the screen.
+
+
+The details
+
+
+
+
+Details :-
+this application will 
+Parameters: 
+1. Blue Light                            
+2. social interactions                  
+3. Chronobiological medication           
+4. Hypnotic and alertness medication    
+5. Atmospheric conditions              
+6. Exercise                           
+7. Eating/drinking patterns           
+8. Metabolic Rate                      
+9. Food Intake
+10. Nutrients
+11. Calories Burn
+12. Biomarkers
+13. Workload
+14. Muscle strain 
+15. Physique             
