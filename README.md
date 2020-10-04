@@ -26,7 +26,7 @@ The details
 
 
 Details :-
-this application will 
+
 Parameters: 
 1. Blue Light                            
 2. social interactions                  
