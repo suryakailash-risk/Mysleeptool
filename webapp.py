@@ -35,6 +35,7 @@ sele=0
 check=0
 yes=0
 Id= "test person 1"
+exn=False
 
 st.title("My sleep tool💤")
 color=st.beta_color_picker("pick the theme", value=None, key=None)
@@ -182,6 +183,7 @@ if st.sidebar.checkbox('Medication'):
         sele = st.selectbox("Select the course           ",want)
         st.write(sele)
 if st.sidebar.checkbox('Nutrition'):
+    exn=True
     link = '[Check with AI](https://node-red-poljp-2020-10-01.eu-gb.mybluemix.net/foodDetails)'
     st.markdown(link, unsafe_allow_html=True)
     link = '[Sources](https://www.nasa.gov/sites/default/files/atoms/files/stemonstrations_nutrition.pdf)'
@@ -327,6 +329,8 @@ if st.sidebar.checkbox('Nutrition'):
             check=True
 if st.sidebar.checkbox('Exercise'):
     manual = False
+    if exn==False:
+        st.write("NOTE: if it shows any error NOT DEFINED please enable the Nurtririon in the navigator")
     if sel_dict['Kcals'] <= 500:
         html_temp= """
         <div>
