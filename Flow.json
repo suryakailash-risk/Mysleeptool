@@ -1,0 +1,267 @@
+[
+    {
+        "id": "a9fcdc5.ce0672",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3132267d.f4474a",
+        "type": "http request",
+        "z": "a9fcdc5.ce0672",
+        "name": "Nutritionix API",
+        "method": "GET",
+        "ret": "obj",
+        "url": "https://api.nutritionix.com/v1_1/search/{{{text}}}?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat&appId={{{appId}}}&appKey={{{appKey}}}",
+        "tls": "",
+        "x": 660,
+        "y": 580,
+        "wires": [
+            [
+                "43ad4485.14604c"
+            ]
+        ],
+        "inputLabels": [
+            "msg.payload"
+        ]
+    },
+    {
+        "id": "f362a7b4.c13698",
+        "type": "http in",
+        "z": "a9fcdc5.ce0672",
+        "name": "",
+        "url": "/foodDetails",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 107.5,
+        "y": 103,
+        "wires": [
+            [
+                "87be9602.49ba58"
+            ]
+        ]
+    },
+    {
+        "id": "7fc8b37b.b0de8c",
+        "type": "http response",
+        "z": "a9fcdc5.ce0672",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 830,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d0987ab8.93b7f8",
+        "type": "template",
+        "z": "a9fcdc5.ce0672",
+        "name": "HTML form",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<h1>Calorie Counter App using Watson Visual Recognition</h1>\n<h2>Simplify your calorie counting using Watson Visual Recognition!</h2>\n<form  action=\"/foodDetails\" method=\"get\">\n    <img src=\"https://i.ytimg.com/vi/x7AB2KXFTEY/hqdefault.jpg\" height='200'/>\n    <img src=\"https://www.ndtv.com/cooks/images/Chicken-Reshmi-Biryani_620.jpg\" height='200'/>\n    <img src=\"http://s3-ap-southeast-1.amazonaws.com/gounesco.com/wp-content/uploads/2017/04/26170512/gj-1024x549.jpg\" height='200'/>\n    <img src=\"http://www.vegrecipesofindia.com/wp-content/uploads/2009/08/dhaba-style-dal-fry-recipe-0.jpg\" height='200'/>\n    <img src=\"http://www.seriouseats.com/recipes/images/2016/03/20160328-channa-masala-recipe-6-1500x1125.jpg\" height='200'/>\n    <img src=\"http://www.ruchiskitchen.com/wp-content/uploads/2016/12/spicy-peanut-noodles-recipe-14.jpg\" height='200'/>\n    <img src=\"https://truffle-assets.imgix.net/67ce1315-104-icecream-dishland2.jpg\" height='200'/>\n    <img src=\"http://cdn2.foodviva.com/static-content/food-images/pineapple-recipes/pineapple-juice-recipe/pineapple-juice-recipe.jpg\" height='200'/>\n    <img src=\"https://d24pyncn3hxs0c.cloudfront.net/sites/default/files/styles/productimage_325/public/choco-truffle-half-kg-cake-A.jpg\" height='200'/>\n    <br/><b>Right-click one of the above images and select Copy image location and paste the URL in the box below OR<br>Do an image search for food. After you click on an image, to the right it usually says \"View image\" click that to get the URL!</b><br/>\n    <br><br/><b>Image URL:</b><input type=\"text\" name=\"imageurl\"/>\n    <input type=\"submit\" value=\"Analyze\"/>\n</form>",
+        "output": "str",
+        "x": 441.5,
+        "y": 127,
+        "wires": [
+            [
+                "7fc8b37b.b0de8c"
+            ]
+        ]
+    },
+    {
+        "id": "169bd5d.70dc42a",
+        "type": "function",
+        "z": "a9fcdc5.ce0672",
+        "name": "Set Image URL and Classifier details",
+        "func": "msg.payload= msg.payload.imageurl;\nmsg.params={};\nmsg.params[\"classifier_ids\"]=[\"food\"];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 492.5,
+        "y": 226,
+        "wires": [
+            [
+                "863fd4b0.16b788",
+                "e33b27a5.d90528"
+            ]
+        ]
+    },
+    {
+        "id": "863fd4b0.16b788",
+        "type": "visual-recognition-v3",
+        "z": "a9fcdc5.ce0672",
+        "name": "",
+        "vr-service-endpoint": "https://api.us-south.visual-recognition.watson.cloud.ibm.com",
+        "image-feature": "classifyImage",
+        "lang": "en",
+        "x": 136.5,
+        "y": 400,
+        "wires": [
+            [
+                "cb94592.4930ca8",
+                "3d5c5ae5.539c96"
+            ]
+        ]
+    },
+    {
+        "id": "87be9602.49ba58",
+        "type": "switch",
+        "z": "a9fcdc5.ce0672",
+        "name": "Check image url",
+        "property": "payload.imageurl",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 124.5,
+        "y": 223,
+        "wires": [
+            [
+                "d0987ab8.93b7f8"
+            ],
+            [
+                "169bd5d.70dc42a"
+            ]
+        ]
+    },
+    {
+        "id": "43ad4485.14604c",
+        "type": "template",
+        "z": "a9fcdc5.ce0672",
+        "name": "Display Analyzed Food Image & Nutritional Information",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<center>\n<h1>Calorie Counter App using Watson Visual Recognition</h1>\n<h3>Simplify your calorie counting using Watson Visual Recognition!</h3>\n    <p>Analyzed image: {{result.images.0.resolved_url}}<br/><img id=\"image\" src=\"{{result.images.0.resolved_url}}\" height=\"200\"/></p>\n    <p>Images Processed: {{result.images_processed}}</p>\n    <h2>Watson Sees..</h2>\n    <table border='1'>\n        <thead><tr><th>Classes</th><th>Confidence Score</th></tr></thead>\n        {{#result.images.0.classifiers.0.classes}}<tr>\n        <td>{{class}}</td><td>{{score}}</td>\n        </tr>{{/result.images.0.classifiers.0.classes}}\n    </table>\n    <h2>Nutritional Information</h2>\n    <table border='1'>\n        <thead><tr><th>ITEM NAME</th><th>CALORIES</th><th>TOTAL FAT</th><th>SERVING QUANTITY</th><th>SERVING SIZE UNIT</th></tr></thead>\n        {{#payload.hits.0.fields}}<tr>\n        <td>{{item_name}}</td><td>{{nf_calories}}</td><td>{{nf_total_fat}}</td><td>{{nf_serving_size_qty}}</td><td>{{nf_serving_size_unit}}</td>\n        </tr>{{/payload.hits.0.fields}}\n        {{#payload.hits.1.fields}}<tr>\n        <td>{{item_name}}</td><td>{{nf_calories}}</td><td>{{nf_total_fat}}</td><td>{{nf_serving_size_qty}}</td><td>{{nf_serving_size_unit}}</td>\n        </tr>{{/payload.hits.1.fields}}\n        {{#payload.hits.2.fields}}<tr>\n        <td>{{item_name}}</td><td>{{nf_calories}}</td><td>{{nf_total_fat}}</td><td>{{nf_serving_size_qty}}</td><td>{{nf_serving_size_unit}}</td>\n        </tr>{{/payload.hits.2.fields}}\n        {{#payload.hits.3.fields}}<tr>\n        <td>{{item_name}}</td><td>{{nf_calories}}</td><td>{{nf_total_fat}}</td><td>{{nf_serving_size_qty}}</td><td>{{nf_serving_size_unit}}</td>\n        </tr>{{/payload.hits.3.fields}}\n        {{#payload.hits.4.fields}}<tr>\n        <td>{{item_name}}</td><td>{{nf_calories}}</td><td>{{nf_total_fat}}</td><td>{{nf_serving_size_qty}}</td><td>{{nf_serving_size_unit}}</td>\n        </tr>{{/payload.hits.4.fields}}\n    </table>\n    <form  action=\"/foodDetails\" method=\"get\">\n        <br><input type=\"submit\" value=\"Try again or go back to the home page\"/>\n    </form>\n</center>",
+        "output": "str",
+        "x": 689.5,
+        "y": 398,
+        "wires": [
+            [
+                "7fc8b37b.b0de8c"
+            ]
+        ]
+    },
+    {
+        "id": "cb94592.4930ca8",
+        "type": "change",
+        "z": "a9fcdc5.ce0672",
+        "name": "Set Nutritionix API Details and Analyzed Image",
+        "rules": [
+            {
+                "t": "set",
+                "p": "text",
+                "pt": "msg",
+                "to": "result.images[0].classifiers[0].classes[0].class",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "appId",
+                "pt": "msg",
+                "to": "329e10d4",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "appKey",
+                "pt": "msg",
+                "to": "3b3950b138bd6c7f3e84226076c337a7",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 343,
+        "y": 582,
+        "wires": [
+            [
+                "3132267d.f4474a"
+            ]
+        ]
+    },
+    {
+        "id": "3d5c5ae5.539c96",
+        "type": "delay",
+        "z": "a9fcdc5.ce0672",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "50",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 353,
+        "y": 403,
+        "wires": [
+            [
+                "43ad4485.14604c"
+            ]
+        ]
+    },
+    {
+        "id": "e33b27a5.d90528",
+        "type": "debug",
+        "z": "a9fcdc5.ce0672",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 767.5,
+        "y": 323,
+        "wires": []
+    },
+    {
+        "id": "d9dec4b.86cd038",
+        "type": "ui_audio",
+        "z": "a9fcdc5.ce0672",
+        "name": "Surya",
+        "group": "e491a22d.5e579",
+        "voice": "Google Deutsch",
+        "always": true,
+        "x": 880,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e491a22d.5e579",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "57131486.6ca09c",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "57131486.6ca09c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
